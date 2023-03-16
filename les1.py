@@ -5,7 +5,8 @@ from tkinter import ttk
 # from Base_clases.base import Add_bd
 from tkinter import messagebox
 from tkinter.messagebox import askyesno
-from conDB import ConnectDB
+import conDB
+
 
 class ButtonFrame(ttk.Frame):
 
@@ -76,32 +77,32 @@ class Add_bd_frame(tk.Frame):
         self.entry_dbname = tk.Entry(self.new_win)
         self.entry_dbname.pack(fill='x', expand=True)
         self.entry_dbname.focus()
-        dbname = self.entry_dbname.get()
+
 
 
         self.label_user = tk.Label(self.new_win, text="User:")
         self.label_user.pack(fill='x', expand=True)
         self.entry_user = tk.Entry(self.new_win)
         self.entry_user.pack(fill='x', expand=True)
-        user = self.entry_user.get()
+
 
         self.label_password = tk.Label(self.new_win, text="Password:")
         self.label_password.pack(fill='x', expand=True)
         self.entry_password = tk.Entry(self.new_win, show="*")
         self.entry_password.pack(fill='x', expand=True)
-        password = self.entry_password.get()
+
 
         self.label_host = tk.Label(self.new_win, text="Host:")
         self.label_host.pack(fill='x', expand=True)
         self.entry_host = tk.Entry(self.new_win)
         self.entry_host.pack(fill='x', expand=True)
-        host = self.entry_host.get()
+
 
         self.label_port = tk.Label(self.new_win, text="Port:")
         self.label_port.pack(fill='x', expand=True)
         self.entry_port = tk.Entry(self.new_win)
         self.entry_port.pack(fill='x', expand=True)
-        port = self.entry_port.get()
+
 
         self.exit_button = tk.Button(self.new_win,
                                   text="Cancel",
@@ -115,15 +116,20 @@ class Add_bd_frame(tk.Frame):
                                   text="Submit",
                                   activebackground='yellow',
                                   # compound=tk.LEFT,
-                                  command=lambda: self.send_properties(dbname, user, password, host, port)
+                                  command=lambda: self.send_properties()
                                   )
         self.submit_button.pack(side='right', ipady='10')
 
         self.new_win.mainloop()
 
-    def send_properties(self, dbname, user, password, host, port):
-        send = ConnectDB(dbname, user, password, host, port)
-        return send
+    def send_properties(self):
+        port = self.entry_port.get()
+        host = self.entry_host.get()
+        password = self.entry_password.get()
+        user = self.entry_user.get()
+        dbname = self.entry_dbname.get()
+
+        return conDB.conn(dbname, user, password, host, port)
     def confirm(self):
         answer = askyesno(
             title='Confirmation',
