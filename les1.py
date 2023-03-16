@@ -2,52 +2,138 @@
 import tkinter as tk
 from tkinter import ttk
 # tk._test()
-from Base_clases.base import Add_bd
+# from Base_clases.base import Add_bd
+from tkinter import messagebox
+from tkinter.messagebox import askyesno
+from conDB import ConnectDB
 
-# def add_db():
-#     new_win = tk.Toplevel(win)
-#     new_win.geometry('250x300+500+300')
-#     new_win.iconbitmap('./icons/base_data.ico')
-#     exit_button = tk.Button(new_win,
-#                             # image="gear.ico",
-#                             new_win.title('Add new Database'),
-#
-#                             text="Cancel",
-#                             activebackground='red',
-#
-#                             # compound=tk.LEFT,
-#                             command=lambda: new_win.destroy()
-#                             )
-#     exit_button.pack()
-#     new_win.mainloop()
+class ButtonFrame(ttk.Frame):
 
-win = tk.Tk()
-h = 300
-w = 250
-win.title('Status DB')
-win.iconbitmap('./icons/gear.ico')
-win.geometry(f"{h}x{w}+400+300")
+    def __init__(self, container):
+        super().__init__(container)
 
-def add_db_win():
-    window = Add_bd()
 
-# add_db_button = tk.Button(win,
-#                           text="Add database",
-#                           activebackground='yellow',
-#                           command=add_db,
-#
-#                           )
+class App(tk.Tk):
+    def __init__(self):
+        super().__init__()
 
-add_db_button = tk.Button(text="Add database", command=add_db_win)
+        self.h = 300
+        self.w = 250
+        self.title('Status DB')
+        self.iconbitmap('./icons/gear.ico')
+        self.geometry(f"{self.h}x{self.w}+400+300")
+        self.resizable(False, True)
+        # self.attributes('-toolwindow', True)
+        self.create_widgets()
 
-exit_button = tk.Button(win,
-                        # image="gear.ico",
-                        text="Exit",
-                        # compound=tk.LEFT,
-                        activebackground='red',
-                        command=lambda: win.destroy()
-                        # command=lambda: win.quit()
-                        )
-add_db_button.pack()
-exit_button.pack()
-win.mainloop()
+
+    def add_db_win(self):
+        window = Add_bd_frame()
+
+
+    def create_widgets(self):
+        add_db_button = tk.Button(text="Add database", command=self.add_db_win, activebackground='yellow')
+
+        exit_button = tk.Button(self,
+                                # image="gear.ico",
+                                text="Exit",
+                                # compound=tk.LEFT,
+                                activebackground='red',
+                                command=lambda: self.confirm()
+                               )
+
+        add_db_button.place(relx=.4, rely=.7, anchor='e')
+        exit_button.place(relx=.8, rely=.7, anchor='w')
+
+    def confirm(self):
+        answer = askyesno(
+            title='Confirmation',
+            message='Are you sure to exit?',
+        )
+        if answer:
+            self.destroy()
+
+
+
+class Add_bd_frame(tk.Frame):
+
+
+    def __init__(self):
+        super().__init__()
+
+        # user = StringVar()
+        # password = StringVar()
+        # host = StringVar()
+        # port = StringVar()
+        self.new_win = tk.Toplevel(self)
+        self.new_win.geometry('350x300+500+300')
+        self.new_win.iconbitmap('./icons/base_data.ico')
+        self.new_win.title('Add new Database')
+        # self.new_win.attributes('-topmost', 1)
+
+        self.label_dbname = tk.Label(self.new_win, text="DBname:")
+        self.label_dbname.pack(fill='x', expand=True)
+        self.entry_dbname = tk.Entry(self.new_win)
+        self.entry_dbname.pack(fill='x', expand=True)
+        self.entry_dbname.focus()
+        dbname = self.entry_dbname.get()
+
+
+        self.label_user = tk.Label(self.new_win, text="User:")
+        self.label_user.pack(fill='x', expand=True)
+        self.entry_user = tk.Entry(self.new_win)
+        self.entry_user.pack(fill='x', expand=True)
+        user = self.entry_user.get()
+
+        self.label_password = tk.Label(self.new_win, text="Password:")
+        self.label_password.pack(fill='x', expand=True)
+        self.entry_password = tk.Entry(self.new_win, show="*")
+        self.entry_password.pack(fill='x', expand=True)
+        password = self.entry_password.get()
+
+        self.label_host = tk.Label(self.new_win, text="Host:")
+        self.label_host.pack(fill='x', expand=True)
+        self.entry_host = tk.Entry(self.new_win)
+        self.entry_host.pack(fill='x', expand=True)
+        host = self.entry_host.get()
+
+        self.label_port = tk.Label(self.new_win, text="Port:")
+        self.label_port.pack(fill='x', expand=True)
+        self.entry_port = tk.Entry(self.new_win)
+        self.entry_port.pack(fill='x', expand=True)
+        port = self.entry_port.get()
+
+        self.exit_button = tk.Button(self.new_win,
+                                  text="Cancel",
+                                  activebackground='red',
+                                  # compound=tk.LEFT,
+                                  command=lambda: self.confirm()
+                                  )
+        self.exit_button.pack(side='left', ipady='10')
+
+        self.submit_button = tk.Button(self.new_win,
+                                  text="Submit",
+                                  activebackground='yellow',
+                                  # compound=tk.LEFT,
+                                  command=lambda: self.send_properties(dbname, user, password, host, port)
+                                  )
+        self.submit_button.pack(side='right', ipady='10')
+
+        self.new_win.mainloop()
+
+    def send_properties(self, dbname, user, password, host, port):
+        send = ConnectDB(dbname, user, password, host, port)
+        return send
+    def confirm(self):
+        answer = askyesno(
+            title='Confirmation',
+            message='Cancel add database.',
+        )
+        if answer:
+            self.new_win.destroy()
+
+
+if __name__ == "__main__":
+    app = App()
+
+    app.mainloop()
