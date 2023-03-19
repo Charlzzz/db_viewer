@@ -62,10 +62,6 @@ class Add_bd_frame(tk.Frame):
     def __init__(self):
         super().__init__()
 
-        # user = StringVar()
-        # password = StringVar()
-        # host = StringVar()
-        # port = StringVar()
         self.new_win = tk.Toplevel(self)
         self.new_win.geometry('350x300+500+300')
         self.new_win.iconbitmap('./icons/base_data.ico')
