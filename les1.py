@@ -6,7 +6,7 @@ from tkinter import ttk
 from tkinter import messagebox
 from tkinter.messagebox import askyesno
 import conDB
-
+from tkinter.messagebox import showerror, showwarning, showinfo
 
 class ButtonFrame(ttk.Frame):
 
@@ -108,12 +108,14 @@ class Add_bd_frame(tk.Frame):
                                   )
         self.exit_button.pack(side='left', ipady='10')
 
+        # variable = messagebox.showinfo('Information', 'New DB has been successfully added.')
         self.submit_button = tk.Button(self.new_win,
                                   text="Submit",
                                   activebackground='yellow',
                                   # compound=tk.LEFT,
                                   command=lambda: self.send_properties()
                                   )
+
         self.submit_button.pack(side='right', ipady='10')
 
         self.new_win.mainloop()
@@ -125,15 +127,22 @@ class Add_bd_frame(tk.Frame):
         user = self.entry_user.get()
         dbname = self.entry_dbname.get()
 
-        return conDB.conn(dbname, user, password, host, port)
+        if conDB.conn(dbname, user, password, host, port) == True:
+            messagebox.showinfo('Information', 'New DB has been successfully added.')
+            self.new_win.destroy()
+
+    #     self.new_win.showinfo(title='Information', message='New DB has been successfully added.')
+        # return conDB.conn(dbname, user, password, host, port)
     def confirm(self):
         answer = askyesno(
             title='Confirmation',
-            message='Cancel add database.',
+            message='Cancel add database.'
         )
         if answer:
             self.new_win.destroy()
 
+    def successful_add_db(self, used_window):
+        pass
 
 if __name__ == "__main__":
     app = App()
