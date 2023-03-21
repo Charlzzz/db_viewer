@@ -25,8 +25,23 @@ class App(tk.Tk):
         self.geometry(f"{self.h}x{self.w}+400+300")
         self.resizable(False, True)
         # self.attributes('-toolwindow', True)
-        self.create_widgets()
 
+        self.create_widgets()
+        print(self.getting_status())
+
+
+    def update_label(self):
+        return
+    def getting_status(self):
+        while True:
+            with open('D:\\list_db_viewer.txt', 'r', encoding='utf-8') as read_list_dbfile:
+                res = read_list_dbfile.readlines()
+                for i in res:
+                    dbname, user, password, host, port = [a.strip() for a in i.split(" ")]
+                    return dbname, conDB.conn(dbname, user, password, host, port)
+
+            read_list_dbfile.close()
+            # title_base =
 
     def add_db_win(self):
         window = Add_bd_frame()
@@ -42,7 +57,7 @@ class App(tk.Tk):
                                 activebackground='red',
                                 command=lambda: self.confirm()
                                )
-
+        # self.lable_db_name = tk.Label(text)
         add_db_button.place(relx=.4, rely=.7, anchor='e')
         exit_button.place(relx=.8, rely=.7, anchor='w')
 
