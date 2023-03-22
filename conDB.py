@@ -4,19 +4,19 @@ from psycopg2 import connect
 
 def conn(dbname, user, password, host, port):
 
-    # con = connect(dbname='test', user='postgres',
-    #               password='0ziro0', host='127.0.0.1', port='5432')
-    con = connect(dbname=dbname, user=user,
-                  password=password, host=host, port=port)
     try:
+        con = connect(dbname=dbname, user=user,
+                      password=password, host=host, port=port)
+
         cur = con.cursor()
         cur.execute('select * from users')
     except psycopg2.DatabaseError as err:
         print("wtf")
+        # con.close()
         return False
     else:
         print('all right')
-        add_db_to_text(dbname, user, password, host, port)
+        # add_db_to_text(dbname, user, password, host, port)
         con.close()
         return True
 

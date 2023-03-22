@@ -1,17 +1,16 @@
 # from tkinter import *
 import tkinter as tk
 from tkinter import ttk
-# tk._test()
 # from Base_clases.base import Add_bd
 from tkinter import messagebox
 from tkinter.messagebox import askyesno
 import conDB
 from tkinter.messagebox import showerror, showwarning, showinfo
 
-class ButtonFrame(ttk.Frame):
-
-    def __init__(self, container):
-        super().__init__(container)
+# class ButtonFrame(ttk.Frame):
+#
+#     def __init__(self, container):
+#         super().__init__(container)
 
 
 class App(tk.Tk):
@@ -25,23 +24,36 @@ class App(tk.Tk):
         self.geometry(f"{self.h}x{self.w}+400+300")
         self.resizable(False, True)
         # self.attributes('-toolwindow', True)
-
+        self.getting_status()
         self.create_widgets()
-        print(self.getting_status())
 
 
-    def update_label(self):
-        return
+
+
+    def update_label(self, dbname, status, counter):
+        if status == True:
+            self.db_label = tk.Label(self, text=dbname, background='green')
+            self.db_label.grid(column=counter, row=1, sticky=tk.W, padx=5, pady=5)
+        elif status == False:
+            self.db_label = tk.Label(self, text=dbname, background='red')
+            self.db_label.grid(column=counter, row=1, sticky=tk.W, padx=5, pady=5)
+
     def getting_status(self):
-        while True:
-            with open('D:\\list_db_viewer.txt', 'r', encoding='utf-8') as read_list_dbfile:
-                res = read_list_dbfile.readlines()
-                for i in res:
-                    dbname, user, password, host, port = [a.strip() for a in i.split(" ")]
-                    return dbname, conDB.conn(dbname, user, password, host, port)
 
-            read_list_dbfile.close()
-            # title_base =
+        with open('D:\\list_db_viewer.txt', 'r', encoding='utf-8') as read_list_dbfile:
+            counter = 0
+            res = read_list_dbfile.readlines()
+            for i in res:
+                counter += 1
+                dbname, user, password, host, port = [a.strip() for a in i.split(" ")]
+                status = conDB.conn(dbname, user, password, host, port)
+                self.update_label(dbname, status, counter)
+        counter = 0
+        read_list_dbfile.close()
+        self.after(15000, self.getting_status)
+
+
+        # title_base =
 
     def add_db_win(self):
         window = Add_bd_frame()
@@ -57,7 +69,8 @@ class App(tk.Tk):
                                 activebackground='red',
                                 command=lambda: self.confirm()
                                )
-        # self.lable_db_name = tk.Label(text)
+
+
         add_db_button.place(relx=.4, rely=.7, anchor='e')
         exit_button.place(relx=.8, rely=.7, anchor='w')
 
@@ -130,7 +143,8 @@ class Add_bd_frame(tk.Frame):
                                   # compound=tk.LEFT,
                                   command=lambda: self.send_properties()
                                   )
-
+        # self.db_label = tk.Label(text='None')  # лейбл
+        # self.db_label.pack()
         self.submit_button.pack(side='right', ipady='10')
 
         self.new_win.mainloop()
@@ -143,11 +157,10 @@ class Add_bd_frame(tk.Frame):
         dbname = self.entry_dbname.get()
 
         if conDB.conn(dbname, user, password, host, port) == True:
+            conDB.add_db_to_text(dbname, user, password, host, port)
             messagebox.showinfo('Information', 'New DB has been successfully added.')
             self.new_win.destroy()
 
-    #     self.new_win.showinfo(title='Information', message='New DB has been successfully added.')
-        # return conDB.conn(dbname, user, password, host, port)
     def confirm(self):
         answer = askyesno(
             title='Confirmation',
@@ -161,5 +174,4 @@ class Add_bd_frame(tk.Frame):
 
 if __name__ == "__main__":
     app = App()
-
     app.mainloop()
