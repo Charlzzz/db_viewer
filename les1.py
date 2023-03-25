@@ -7,10 +7,6 @@ from tkinter.messagebox import askyesno
 import conDB
 from tkinter.messagebox import showerror, showwarning, showinfo
 
-# class ButtonFrame(ttk.Frame):
-#
-#     def __init__(self, container):
-#         super().__init__(container)
 
 
 class App(tk.Tk):
@@ -23,6 +19,7 @@ class App(tk.Tk):
         self.iconbitmap('./icons/gear.ico')
         self.geometry(f"{self.h}x{self.w}+400+300")
         self.resizable(False, True)
+        self.configure(bg='light goldenrod')
         # self.attributes('-toolwindow', True)
         self.getting_status()
         self.create_widgets()
@@ -32,11 +29,11 @@ class App(tk.Tk):
 
     def update_label(self, dbname, status, counter):
         if status == True:
-            self.db_label = tk.Label(self, text=dbname, background='green')
-            self.db_label.grid(column=counter, row=1, sticky=tk.W, padx=5, pady=5)
+            self.db_label = tk.Label(self, text=dbname, background='SpringGreen2')
+            self.db_label.grid(column=1, row=counter, sticky=tk.W, padx=30, pady=3)
         elif status == False:
-            self.db_label = tk.Label(self, text=dbname, background='red')
-            self.db_label.grid(column=counter, row=1, sticky=tk.W, padx=5, pady=5)
+            self.db_label = tk.Label(self, text=dbname, background='red2')
+            self.db_label.grid(column=1, row=counter, sticky=tk.W, padx=30, pady=3)
 
     def getting_status(self):
 
@@ -60,11 +57,15 @@ class App(tk.Tk):
 
 
     def create_widgets(self):
-        add_db_button = tk.Button(text="Add database", command=self.add_db_win, activebackground='yellow')
+        add_db_button = tk.Button(text="Add database",
+                                  command=self.add_db_win,
+                                  background='goldenrod',
+                                  activebackground='yellow')
 
         exit_button = tk.Button(self,
                                 # image="gear.ico",
                                 text="Exit",
+                                background='goldenrod',
                                 # compound=tk.LEFT,
                                 activebackground='red',
                                 command=lambda: self.confirm()
@@ -95,43 +96,44 @@ class Add_bd_frame(tk.Frame):
         self.new_win.iconbitmap('./icons/base_data.ico')
         self.new_win.title('Add new Database')
         # self.new_win.attributes('-topmost', 1)
+        self.new_win.configure(bg='light goldenrod')
 
-        self.label_dbname = tk.Label(self.new_win, text="DBname:")
-        self.label_dbname.pack(fill='x', expand=True)
-        self.entry_dbname = tk.Entry(self.new_win)
-        self.entry_dbname.pack(fill='x', expand=True)
+        self.label_dbname = tk.Label(self.new_win, text="DBname:", background="DarkOrange1")
+        self.label_dbname.pack(expand=True, ipadx="20")
+        self.entry_dbname = tk.Entry(self.new_win, background="lemon chiffon")
+        self.entry_dbname.pack(expand=True, ipadx="20")
         self.entry_dbname.focus()
 
 
 
-        self.label_user = tk.Label(self.new_win, text="User:")
-        self.label_user.pack(fill='x', expand=True)
-        self.entry_user = tk.Entry(self.new_win)
-        self.entry_user.pack(fill='x', expand=True)
+        self.label_user = tk.Label(self.new_win, text="User:", background="DarkOrange1")
+        self.label_user.pack(expand=True, ipadx="20")
+        self.entry_user = tk.Entry(self.new_win, background="lemon chiffon")
+        self.entry_user.pack(expand=True, ipadx="20")
 
 
-        self.label_password = tk.Label(self.new_win, text="Password:")
-        self.label_password.pack(fill='x', expand=True)
-        self.entry_password = tk.Entry(self.new_win, show="*")
-        self.entry_password.pack(fill='x', expand=True)
+        self.label_password = tk.Label(self.new_win, text="Password:", background="DarkOrange1")
+        self.label_password.pack(expand=True, ipadx="20")
+        self.entry_password = tk.Entry(self.new_win, show="*", background="lemon chiffon")
+        self.entry_password.pack(expand=True, ipadx="20")
 
 
-        self.label_host = tk.Label(self.new_win, text="Host:")
-        self.label_host.pack(fill='x', expand=True)
-        self.entry_host = tk.Entry(self.new_win)
-        self.entry_host.pack(fill='x', expand=True)
+        self.label_host = tk.Label(self.new_win, text="Host:", background="DarkOrange1")
+        self.label_host.pack(expand=True, ipadx="20")
+        self.entry_host = tk.Entry(self.new_win, background="lemon chiffon")
+        self.entry_host.pack(expand=True, ipadx="20")
 
 
-        self.label_port = tk.Label(self.new_win, text="Port:")
-        self.label_port.pack(fill='x', expand=True)
-        self.entry_port = tk.Entry(self.new_win)
-        self.entry_port.pack(fill='x', expand=True)
+        self.label_port = tk.Label(self.new_win, text="Port:", background="DarkOrange1")
+        self.label_port.pack(expand=True, ipadx="20")
+        self.entry_port = tk.Entry(self.new_win, background="lemon chiffon")
+        self.entry_port.pack(expand=True, ipadx="20")
 
 
         self.exit_button = tk.Button(self.new_win,
                                   text="Cancel",
                                   activebackground='red',
-                                  # compound=tk.LEFT,
+                                  background='goldenrod',
                                   command=lambda: self.confirm()
                                   )
         self.exit_button.pack(side='left', ipady='10')
@@ -140,7 +142,7 @@ class Add_bd_frame(tk.Frame):
         self.submit_button = tk.Button(self.new_win,
                                   text="Submit",
                                   activebackground='yellow',
-                                  # compound=tk.LEFT,
+                                  background='goldenrod',
                                   command=lambda: self.send_properties()
                                   )
         # self.db_label = tk.Label(text='None')  # лейбл
