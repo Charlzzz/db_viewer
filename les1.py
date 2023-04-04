@@ -193,6 +193,7 @@ class Add_bd_frame(tk.Frame):
             "user": self.entry_user.get(),
             "dbname": self.entry_dbname.get()
         }
+        start_send_properties = True
         for value_get in check_value.values():
             if value_get:
                 continue
@@ -201,8 +202,10 @@ class Add_bd_frame(tk.Frame):
                 showerror(
                     title='Error',
                     message='Input required fields.')
+                start_send_properties = False
                 break
-        self.send_properties()
+        if start_send_properties:
+            self.send_properties()
 
 
     def successful_add_db(self, used_window):
