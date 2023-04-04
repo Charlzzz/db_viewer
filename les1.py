@@ -60,7 +60,8 @@ class App(tk.Tk):
         add_db_button = tk.Button(text="Add database",
                                   command=self.add_db_win,
                                   background='goldenrod',
-                                  activebackground='yellow')
+                                  activebackground='yellow',
+                                  cursor='plus')
 
         exit_button = tk.Button(self,
                                 # image="gear.ico",
@@ -68,7 +69,8 @@ class App(tk.Tk):
                                 background='goldenrod',
                                 # compound=tk.LEFT,
                                 activebackground='red',
-                                command=lambda: self.confirm()
+                                command=lambda: self.confirm(),
+                                cursor="right_side"
                                )
 
 
@@ -134,19 +136,20 @@ class Add_bd_frame(tk.Frame):
                                   text="Cancel",
                                   activebackground='red',
                                   background='goldenrod',
+                                  cursor="right_side",
                                   command=lambda: self.confirm()
                                   )
         self.exit_button.pack(side='left', ipady='10')
 
-        # variable = messagebox.showinfo('Information', 'New DB has been successfully added.')
+
         self.submit_button = tk.Button(self.new_win,
                                   text="Submit",
                                   activebackground='yellow',
                                   background='goldenrod',
-                                  command=lambda: self.send_properties()
+                                  command=lambda: self.check_empty_entry(),
+                                  cursor='plus'
                                   )
-        # self.db_label = tk.Label(text='None')  # лейбл
-        # self.db_label.pack()
+
         self.submit_button.pack(side='right', ipady='10')
 
         self.new_win.mainloop()
@@ -162,6 +165,10 @@ class Add_bd_frame(tk.Frame):
             conDB.add_db_to_text(dbname, user, password, host, port)
             messagebox.showinfo('Information', 'New DB has been successfully added.')
             self.new_win.destroy()
+        else:
+            showerror(
+                title='Error',
+                message='Check  input value on valid and repeat')
 
     def confirm(self):
         answer = askyesno(
@@ -170,6 +177,33 @@ class Add_bd_frame(tk.Frame):
         )
         if answer:
             self.new_win.destroy()
+
+
+    def check_empty_entry(self):
+        # port = self.entry_port.get()
+        # host = self.entry_host.get()
+        # password = self.entry_password.get()
+        # user = self.entry_user.get()
+        # dbname = self.entry_dbname.get()
+        # check_value = (port, host, password, user, dbname)
+        check_value = {
+            "port": self.entry_port.get(),
+            "host": self.entry_host.get(),
+            "password": self.entry_password.get(),
+            "user": self.entry_user.get(),
+            "dbname": self.entry_dbname.get()
+        }
+        for value_get in check_value.values():
+            if value_get:
+                continue
+            else:
+                # check_value[value_get].focus_set()
+                showerror(
+                    title='Error',
+                    message='Input required fields.')
+                break
+        self.send_properties()
+
 
     def successful_add_db(self, used_window):
         pass
