@@ -16,11 +16,11 @@ class App(tk.Tk):
         self.h = 300
         self.w = 250
         self.title('Status DB')
-        self.iconbitmap('./icons/gear.ico')
+        # self.iconbitmap('./icons/gear.ico')
+        self.iconbitmap(r"C:\\Users\\WarMachine\\PycharmProjects\\db_viewer\\icons\\gear.ico")
         self.geometry(f"{self.h}x{self.w}+400+300")
         self.resizable(False, True)
         self.configure(bg='light goldenrod')
-        # self.attributes('-toolwindow', True)
         self.getting_status()
         self.create_widgets()
 
@@ -47,7 +47,7 @@ class App(tk.Tk):
                 self.update_label(dbname, status, counter)
         counter = 0
         read_list_dbfile.close()
-        self.after(15000, self.getting_status)
+        self.after(60000, self.getting_status)
 
 
         # title_base =
@@ -95,7 +95,8 @@ class Add_bd_frame(tk.Frame):
 
         self.new_win = tk.Toplevel(self)
         self.new_win.geometry('350x300+500+300')
-        self.new_win.iconbitmap('./icons/base_data.ico')
+        # self.new_win.iconbitmap('./icons/base_data.ico')
+        self.new_win.iconbitmap(r"C:\\Users\\WarMachine\\PycharmProjects\\db_viewer\\icons\\base_data.ico")
         self.new_win.title('Add new Database')
         # self.new_win.attributes('-topmost', 1)
         self.new_win.configure(bg='light goldenrod')
